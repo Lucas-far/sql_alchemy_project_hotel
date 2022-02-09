@@ -48,29 +48,13 @@ class DatabaseQuerySpecific:
                             attempts_remaining.format(self.__number_attempts_max - self.__number_attempts))
             DatabaseQuerySpecific.part_2(self)
 
-    @property
-    def input_launcher(self):
-        return self.__input_launcher
-
-    @input_launcher.setter
-    def input_launcher(self, new):
-        self.__input_launcher = new
-
-    @property
-    def input_hotel_id(self):
-        return self.__input_hotel_id
-
-    @input_hotel_id.setter
-    def input_hotel_id(self, new):
-        self.__input_hotel_id = new
-
-    def __init__(self, input_launcher, input_hotel_id):
-        self.__input_launcher = input_launcher
-        self.__input_hotel_id = input_hotel_id
+    def __init__(self):
+        self.__input_launcher = None
+        self.__input_hotel_id = None
         self.__number_attempts = 0
         self.__number_attempts_max = 3
 
 
 if __name__ == '__main__':
-    hotel_object_search = DatabaseQuerySpecific(input_launcher=None, input_hotel_id=None)
+    hotel_object_search = DatabaseQuerySpecific()
     hotel_object_search.query_database_data()
