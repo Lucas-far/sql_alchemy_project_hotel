@@ -18,14 +18,14 @@ class DatabaseQuery:
     @staticmethod
     def database_view():
         while True:
-            menu_creator(paint=True, move_to_right=True, right_px=50, menu_content=menu_see_database)
+            menu_creator(paint=True, move_to_right=False, right_px=0, menu_content=menu_see_database)
             this_input = input(operation)
 
             if this_input in allowed_numbers:
 
                 if this_input == '0':
                     print(closure)
-                    break
+                    exit(0)
                 elif this_input == '1':
                     Hotel.database_query(exec_=cursor)
                     input(roll)

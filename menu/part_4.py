@@ -44,7 +44,7 @@ class ObjectEdit:
     def input_new_attrib_value(self, new):
         self.__input_new_attrib_value = new
 
-    def algorithm_launch(self):
+    def object_edit(self):
         print(f'{"=" * 10} PARTE 1 {"=" * 10}')
         menu_creator(paint=True, move_to_right=False, right_px=0, menu_content=menu_edit_object)
         self.__input_launch = input(operation)
@@ -56,7 +56,7 @@ class ObjectEdit:
             ObjectEdit.part_2(self)                    # prosseguir
         else:
             code_block_init(error, warn.format(0, 1))  # erro
-            ObjectEdit.algorithm_launch(self)                    # repete a função
+            ObjectEdit.object_edit(self)                    # repete a função
 
     def part_2(self):
         print(f'{"=" * 10} PARTE 2 {"=" * 10}')
@@ -110,7 +110,7 @@ class ObjectEdit:
                                 _key=attribs[index],
                                 _value=self.__input_new_attrib_value)
                 input(roll)
-                ObjectEdit.algorithm_launch(self)
+                ObjectEdit.object_edit(self)
             else:
                 index += 1
 
@@ -120,7 +120,7 @@ class ObjectEdit:
         #                     _key=attribs[0],
         #                     _value=self.__input_new_attrib_value)
         #     input(roll)
-        #     ObjectEdit.algorithm_launch(self)
+        #     ObjectEdit.object_edit(self)
         #     menu_creator(paint=True, move_to_right=True, right_px=50, menu_content=menu_edit_object)
         # elif self.__input_attrib_number == attribs_numbers[1]:
         #     Hotel.to_update(exec_=cursor,
@@ -128,7 +128,7 @@ class ObjectEdit:
         #                     _key=attribs[1],
         #                     _value=self.__input_new_attrib_value)
         #     input(roll)
-        #     ObjectEdit.algorithm_launch(self)
+        #     ObjectEdit.object_edit(self)
         #     menu_creator(paint=True, move_to_right=True, right_px=50, menu_content=menu_edit_object)
         # elif self.__input_attrib_number == attribs_numbers[2]:
         #     Hotel.to_update(exec_=cursor,
@@ -136,7 +136,7 @@ class ObjectEdit:
         #                     _key=attribs[2],
         #                     _value=self.__input_new_attrib_value)
         #     input(roll)
-        #     ObjectEdit.algorithm_launch(self)
+        #     ObjectEdit.object_edit(self)
         #     menu_creator(paint=True, move_to_right=True, right_px=50, menu_content=menu_edit_object)
         # elif self.__input_attrib_number == attribs_numbers[3]:
         #     Hotel.to_update(exec_=cursor,
@@ -144,7 +144,7 @@ class ObjectEdit:
         #                     _key=attribs[3],
         #                     _value=self.__input_new_attrib_value)
         #     input(roll)
-        #     ObjectEdit.algorithm_launch(self)
+        #     ObjectEdit.object_edit(self)
         #     menu_creator(paint=True, move_to_right=True, right_px=50, menu_content=menu_edit_object)
         # elif self.__input_attrib_number == attribs_numbers[4]:
         #     Hotel.to_update(exec_=cursor,
@@ -152,7 +152,7 @@ class ObjectEdit:
         #                     _key=attribs[4],
         #                     _value=self.__input_new_attrib_value)
         #     input(roll)
-        #     ObjectEdit.algorithm_launch(self)
+        #     ObjectEdit.object_edit(self)
         #     menu_creator(paint=True, move_to_right=True, right_px=50, menu_content=menu_edit_object)
 
     def __init__(self, input_launch, input_hotel_id, input_attrib_number, input_new_attrib_value):
@@ -164,9 +164,5 @@ class ObjectEdit:
 
 
 if __name__ == '__main__':
-    hotel_object = ObjectEdit(input_launch=None,
-                              input_hotel_id=None,
-                              input_attrib_number=None,
-                              input_new_attrib_value=None)
-
-    hotel_object.algorithm_launch()
+    hotel_object = ObjectEdit(input_launch=None, input_hotel_id=None, input_attrib_number=None, input_new_attrib_value=None)
+    hotel_object.object_edit()

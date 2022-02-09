@@ -33,10 +33,10 @@ which_field = ink(f'\n======= Qual o número do atributo? ======= {ink(hint)}')
 new_value = ink(f'======= Qual o novo valor? ======= {ink(hint)}')
 attrib_chosen = ink('\nAtributo escolhido: {}')
 object_hotel_not_found = ink('O nome de id do hotel "{}" não foi encontrado.\n')
-attempts_remaining = 'Tentativas restantes: {}'
-attempts_exceeded = 'Número de tentativas máxima excedida: 3.'
-attempts_show = 'Tentativas restantes: {}'
-search_in_the_bank = 'Consulte o banco para saber o hotel de id a ser editado.\n'
+attempts_remaining = ink('Tentativas restantes: {}')
+attempts_exceeded = ink('Número de tentativas máxima excedida: {}')
+attempts_show = ink('Tentativas restantes: {}')
+search_in_the_database = ink('Consulte o banco para saber o hotel de id a ser editado.\n')
 
 
 menu_see_database = (
