@@ -2,6 +2,7 @@
 
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, Float, Integer, String
+from utils.functions import code_block_init
 
 # Var para criação do banco, com chamada direta na classe abaixo, na função "database_init()"
 Base = declarative_base()
@@ -40,6 +41,7 @@ class Hotel(Base):
     @staticmethod
     def database_as_var(exec_):
         box = []
+
         for content in exec_.query(Hotel).order_by(Hotel.id_):
             box.append(Hotel.json(object_=content))
         return box
@@ -50,18 +52,19 @@ class Hotel(Base):
         empty_database = 'Banco de dados encontra-se vazio.\n'
 
         hotels_database = Hotel.database_as_var(exec_)
+
         if len(hotels_database) != 0:
             print(available_data)
             for hotel in hotels_database:
                 print(hotel)
         else:
-            print(available_data)
-            print(empty_database)
+            code_block_init(available_data, empty_database)
 
+    # Função GET - verificação
     @staticmethod
     def database_query_by_hotel_id(exec_, hotel_id):
+        query_hotel = exec_.query(Hotel).filter_by(hotel_id=hotel_id).first()
 
-        query_hotel = exec_.query(Hotel).filter_by(hotel_id=hotel_id).first()  # Se não achar: None
         if query_hotel:
             query_hotel_as_dict = Hotel.json(object_=query_hotel)
             return query_hotel_as_dict
@@ -105,27 +108,36 @@ class Hotel(Base):
 
     @staticmethod
     def database_insert(exec_, hotel_object):
-
+        """
+        1.0 - Mensagens de tratamento em caso de erro e sucesso
+        1.1 - Var usada em condição. Se ela mudar seu valor, o objeto não será adicionado
+        1.2 - Dados do banco armazenados em uma var da função
+        1.3 - Iteração sob os dados do banco via atributo "hotel_id" em busca de similaridade com o parâmetro
+        1.4 - Achando o que foi passado como parâmetro dentre os atributos do objeto, a var em "1.1" é modificada
+        1.5 - Se a var em "1.1" não mudar, significa que o objeto não existe no banco e pode ser adicionado
+        1.6 - Exibir o objeto adicionado
+        1.7 - Caso contrário, avisar que o objeto já existe e não pode ser criado
+        """
+        # 1.0
         hotel_object_repeated = 'O nome de id de hotel "{}" já existe. Sua adição ao banco foi cancelada.'
         hotel_object_added = 'Hotel adicionado:\n{}'
 
-        yes = None
-        # --------------------------------------- O banco precisa ser consultado ---------------------------------------
-        hotels_database = Hotel.database_as_var(exec_)
+        yes = None  # 1.1
+        hotels_database = Hotel.database_as_var(exec_)  # 1.2
 
-        # ------------ Se um atributo específico do objeto for encontrado no banco, uma variável é alterada ------------
-        for json in hotels_database:
+        for json in hotels_database:  # 1.3
             if json['hotel_id'] == hotel_object.hotel_id:
-                yes = True
+                yes = True  # 1.4
 
-        # ----------------- Se o atributo do objeto não for achado, o novo objeto pode ser adicionado -----------------
-        if not yes:
+        if not yes:  # 1.5
             exec_.add(hotel_object)
             exec_.commit()
-            # ----------------------------- Função externa para exibir o objeto adicionado -----------------------------
+
+            # 1.6
             hotel_json = Hotel.database_query_by_hotel_id(exec_=exec_, hotel_id=hotel_object.hotel_id)
             print(hotel_object_added.format(hotel_json))
-        else:
+
+        else:  # 1.7
             print(hotel_object_repeated.format(hotel_object.hotel_id))
 
     @staticmethod
@@ -218,6 +230,7 @@ class Hotel(Base):
 
     __tablename__ = 'hoteis'
 
+    # TODO #4.1
     id_ = Column(Integer, primary_key=True, autoincrement=True)
     hotel_id = Column(String(100))
     name = Column(String(100))

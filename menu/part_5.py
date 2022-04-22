@@ -76,50 +76,50 @@ class ObjectDelete:
         self.__number_attempts = 0
         self.__number_attempts_max = 3
 
-    @staticmethod
-    def to_delete_from_database():
-
-        hotel_data = False
-        input_hotel_id_outer = None
-        input_remove_object = None
-        allowed_numbers = ('0', '1')
-
-        while True:
-            menu_creator(paint=True, move_to_right=True, right_px=50, menu_content=menu_delete_object)
-            this_input = input(operation)
-
-            if this_input in allowed_numbers:
-                if this_input == '0':
-                    print(closure)
-                    break
-                elif this_input == '1':
-                    while not hotel_data:
-                        print(delete_object_label)
-                        input_hotel_id = input(hotel_id_name)
-                        input_hotel_id_outer = input_hotel_id
-                        hotel_data = Hotel.database_query_by_hotel_id(exec_=cursor, hotel_id=input_hotel_id)
-                        if not hotel_data:
-                            code_block_init(error, object_hotel_not_found.format(input_hotel_id_outer))
-                    else:
-                        code_block_init(object_to_be_deleted, hotel_data)
-                        while input_remove_object not in allowed_numbers:
-                            input_remove_object = input(ask_if_remove)
-                            if input_remove_object == '0':
-                                code_block_init(announcement, object_removal_canceled)
-                                break
-                            elif input_remove_object == '1':
-                                # code_block_init(object_deleted_label, hotel_data)
-                                Hotel.to_delete(exec_=cursor, hotel_id=input_hotel_id_outer)
-                                input(roll)
-                                break
-                            else:
-                                code_block_init(object_to_be_deleted, hotel_data)
-                else:
-                    code_block_init(error, object_hotel_not_found.format(input_hotel_id_outer))
-                    input(roll)
-            else:
-                code_block_init(error, warn.format(0, 1))
-                input(roll)
+    # @staticmethod
+    # def to_delete_from_database():
+    #
+    #     hotel_data = False
+    #     input_hotel_id_outer = None
+    #     input_remove_object = None
+    #     allowed_numbers = ('0', '1')
+    #
+    #     while True:
+    #         menu_creator(paint=True, move_to_right=True, right_px=50, menu_content=menu_delete_object)
+    #         this_input = input(operation)
+    #
+    #         if this_input in allowed_numbers:
+    #             if this_input == '0':
+    #                 print(closure)
+    #                 break
+    #             elif this_input == '1':
+    #                 while not hotel_data:
+    #                     print(delete_object_label)
+    #                     input_hotel_id = input(hotel_id_name)
+    #                     input_hotel_id_outer = input_hotel_id
+    #                     hotel_data = Hotel.database_query_by_hotel_id(exec_=cursor, hotel_id=input_hotel_id)
+    #                     if not hotel_data:
+    #                         code_block_init(error, object_hotel_not_found.format(input_hotel_id_outer))
+    #                 else:
+    #                     code_block_init(object_to_be_deleted, hotel_data)
+    #                     while input_remove_object not in allowed_numbers:
+    #                         input_remove_object = input(ask_if_remove)
+    #                         if input_remove_object == '0':
+    #                             code_block_init(announcement, object_removal_canceled)
+    #                             break
+    #                         elif input_remove_object == '1':
+    #                             # code_block_init(object_deleted_label, hotel_data)
+    #                             Hotel.to_delete(exec_=cursor, hotel_id=input_hotel_id_outer)
+    #                             input(roll)
+    #                             break
+    #                         else:
+    #                             code_block_init(object_to_be_deleted, hotel_data)
+    #             else:
+    #                 code_block_init(error, object_hotel_not_found.format(input_hotel_id_outer))
+    #                 input(roll)
+    #         else:
+    #             code_block_init(error, warn.format(0, 1))
+    #             input(roll)
 
 
 if __name__ == '__main__':

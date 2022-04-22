@@ -1,0 +1,25 @@
+
+
+Arquivos envolvidos:
+    - models.hotel.py (CONFIGURAÇÃO PARA USO NO ALGORITMO)
+    - utils/functions.py
+    - utils/labels.py
+    - menu/id_2_query_specific.py (ALGORITMO)
+
+=================================================== models/hotel.py ===================================================
+1.0. O que é database_query_by_hotel_id(exec_, hotel_id)?
+    -> Função que faz uma consulta através de um atributo específico do banco, sendo este "hotel_id" (atributo 2)
+    -> Os objetos no banco são rastreados via este atributo, na procura de algum que seja igual a entrada fornecida
+    -> Havendo algum objeto com atributo igual a entrada, este é convertido em "json" e exibido, caso contrário:  "None"
+    -> exec_    = É o cursor criado em "menu/id_1_query.py" que torna a busca no banco possível
+    -> hotel_id = Porém, a consulta só funciona se for passado um tipo de dado (aqui: string), a este parâmetro
+    -> hotel_id = Como essa função é chamada em "menu/id_2_query_specific.py", esse parâmetro receberá algo do algoritmo
+    -> hotel_id = O que ele receberá como argumento é a var interna "self.__input_hotel_id" do algoritmo
+
+============================================= menu/id_2_query_specific.py =============================================
+1.1. Algoritmo que fornece entrada que serve de parâmetro para função que faz consulta no banco
+1.2. A função que faz a consulta é "database_query_by_hotel_id(exec_, hotel_id)"
+1.3. A função permite errar a pesquisa 3 vezes, até o algoritmo encerrar
+1.4. A função itera sob todos os objetos do banco, filtrando a busca pelo atributo 2 "hotel_id"
+1.5. A entrada pedida no algoritmo é o parâmetro de busca da função e retornará None ou um "objeto em json"
+1.6. O algoritmo possui instruções em DOCSTRING dentro da classe

@@ -20,6 +20,7 @@ class Menu:
 
         elif self.__main_input == '1':
             DatabaseQuery.database_view()
+            Menu.database_management(self)
 
         elif self.__main_input == '2':
             an_object = DatabaseQuerySpecific()

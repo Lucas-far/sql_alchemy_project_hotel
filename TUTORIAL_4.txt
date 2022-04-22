@@ -1,0 +1,13 @@
+
+
+Arquivos envolvidos:
+    - models.hotel.py (CONFIGURAÇÃO PARA USO NO ALGORITMO)
+    - utils/functions.py
+    - utils/labels.py
+    - menu/id_4_object_reshape.py (ALGORITMO)
+
+=================================================== models/hotel.py ===================================================
+
+
+============================================= menu/id_4_object_reshape.py =============================================
+. O algoritmo inicialmente verifica se há dados no banco, já que não é possível editar algo que está vazio.
