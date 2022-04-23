@@ -6,11 +6,19 @@ Adicionar objeto
 
 from models.hotel import Hotel
 from id_1_query import cursor
-from utils.functions import (code_block_init, menu_creator)
+
+from utils.functions import (
+    code_block_init, menu_creator
+)
 
 from utils.labels import (
-    closure, error, warn, roll, add_object, object_attribs, object_example, object_report, attrib_numbers_warning,
-    avoid_special_characters, attrib_add_tutorial, menu_add_object, operation, object_data
+    closure,
+    error, warn, roll,
+    object_attribs, object_example,
+    object_report,
+    attrib_numbers_warning,
+    operation,
+    object_data
 )
 
 
@@ -28,6 +36,34 @@ class ObjectAdd:
     1.8 - Informar erro do usuário e relançar a função que cria objeto novamente
     """
 
+    # TODO
+    menu = (
+        '\n========== ADIÇÃO E CRIAÇÃO DE OBJETO ==========',
+        'Encerrar sessão   || aperte 0',
+        'Iniciar           || aperte 1',
+        'Sair sem encerrar || aperte 2'
+    )
+
+    # PARTE 1
+    def algorithm_main_window(self):
+        menu_creator(paint=False, move_to_right=True, right_px=50, menu_content=ObjectAdd.menu)  # 1.0
+
+        self.__input_launcher = input(operation)  # 1.1
+
+        if self.__input_launcher == '0':  # 1.2
+            ObjectAdd.shut_it_down()
+
+        elif self.__input_launcher == '1':  # 1.3
+            ObjectAdd.object_creation(self)
+
+        # TODO: Controlar o algoritmo principal (dar uma opção de retorno ao menu principal sem encerrar)
+        elif self.__input_launcher == '2':
+            from menu.main_menu import manager_object
+            manager_object.database_full_management()
+
+        else:  # 1.4
+            ObjectAdd.misleading_input(self)
+
     @staticmethod
     def shut_it_down():
         print(closure)
@@ -38,9 +74,25 @@ class ObjectAdd:
         input(roll)
         ObjectAdd.algorithm_main_window(self)
 
+    # PARTE 2
+    def object_creation(self):
+
+        # 1.5
+        ObjectAdd.how_to_create_new_object()
+
+        self.__input_object_values = input(object_data)
+
+        ObjectAdd.object_management(self)
+
+        if self.__data_length == self.__max_length:  # Se 5 índices
+            ObjectAdd.hotel_validation_and_display(self)
+
+        else:  # Tamanho != 5
+            ObjectAdd.misleading_object_data(self)
+
     @staticmethod
     def how_to_create_new_object():
-        code_block_init(add_object, object_attribs, object_example)
+        code_block_init(object_attribs, object_example)
 
     def object_management(self):
         self.__values_as_tuple = self.__input_object_values.split(',')
@@ -59,39 +111,9 @@ class ObjectAdd:
 
     def misleading_object_data(self):
         # 1.8
-        code_block_init(error, attrib_numbers_warning, avoid_special_characters, attrib_add_tutorial, object_example)
+        code_block_init(error, attrib_numbers_warning, object_example)
         input(roll)
         ObjectAdd.object_creation(self)
-
-    # PRINCIPAIS
-    def algorithm_main_window(self):
-        menu_creator(paint=True, move_to_right=True, right_px=50, menu_content=menu_add_object)  # 1.0
-
-        self.__input_launcher = input(operation)  # 1.1
-
-        if self.__input_launcher == '0':  # 1.2
-            ObjectAdd.shut_it_down()
-
-        elif self.__input_launcher == '1':  # 1.3
-            ObjectAdd.object_creation(self)
-
-        else:  # 1.4
-            ObjectAdd.misleading_input(self)
-
-    def object_creation(self):
-
-        # 1.5
-        ObjectAdd.how_to_create_new_object()
-
-        self.__input_object_values = input(object_data)
-
-        ObjectAdd.object_management(self)
-
-        if self.__data_length == self.__max_length:  # Se 5 índices
-            ObjectAdd.hotel_validation_and_display(self)
-
-        else:  # Tamanho != 5
-            ObjectAdd.misleading_object_data(self)
 
     def __init__(self):
         self.__input_launcher = None

@@ -6,8 +6,31 @@ Atualizar objeto
 
 from models.hotel import Hotel
 from id_1_query import cursor
-from utils.functions import *
-from utils.labels import *
+
+from utils.functions import (
+    code_block_init, ink, menu_creator
+)
+
+from utils.labels import (
+    error, empty_database,
+    operation,
+    closure,
+    warn,
+    ask_target_hotel_id,
+    attempts_exceeded, search_in_the_database,
+    object_hotel_not_found, attempts_remaining,
+    type_attrib_value, back_to_menu,
+    ask_attrib_value,
+    new_attrib_value,
+    attrib_chosen,
+    roll
+)
+
+
+# TODO: Na função "is_database_empty()" a função built in "exit(0)" foi comentada para impedir a encerramento direto
+# TODO: A função foi substituída por um "input" e uma repetição
+# TODO: A função "exit(0)" não representa um erro, ela apenas não serve para o novo contexto
+# TODO: Os outros "todo" deste módulos mostram as mudanças feitas
 
 
 class ObjectEdit:
@@ -35,7 +58,16 @@ class ObjectEdit:
     2.9 - As tuplas possuem a ordem exata do menu mostrado ao usuário anteriormente, afim de impedir erros no loop
     """
 
+    emergency_cancel = ('0',)
     allowed_attrib_values = ('1', '2', '3', '4', '5')
+
+    # TODO
+    menu = (
+        '\n========== EDITAR OBJETO ==========',
+        'Encerrar sessão   || aperte 0',
+        'Atualizar dado    || aperte 1',
+        'Sair sem encerrar || aperte 2'
+    )
 
     # PARTE 1
     def is_database_empty(self):
@@ -43,10 +75,32 @@ class ObjectEdit:
 
         if database_size == 0:
             code_block_init(error, empty_database)
-            exit(0)
+            input(roll)
+            ObjectEdit.is_database_empty(self)
+            # exit(0)
 
         else:  # 1.1
             ObjectEdit.algorithm_main_window(self)
+
+    # PARTE 2
+    def algorithm_main_window(self):
+        menu_creator(paint=False, move_to_right=False, right_px=0, menu_content=ObjectEdit.menu)  # 1.2
+
+        self.__input_launcher = input(operation)  # 1.3
+
+        if self.__input_launcher == '0':  # 1.4
+            ObjectEdit.shut_it_down()
+
+        if self.__input_launcher == '1':  # 1.5
+            ObjectEdit.object_hotel_id_seek(self)
+
+        # TODO: Controlar o algoritmo principal (dar uma opção de retorno ao menu principal sem encerrar)
+        elif self.__input_launcher == '2':
+            from menu.main_menu import manager_object
+            manager_object.database_full_management()
+
+        else:  # 1.6
+            ObjectEdit.misleading_input(self)
 
     @staticmethod
     def shut_it_down():
@@ -56,6 +110,21 @@ class ObjectEdit:
     def misleading_input(self):
         code_block_init(error, warn.format(0, 1))
         ObjectEdit.algorithm_main_window(self)
+
+    # PARTE 3
+    def object_hotel_id_seek(self):
+
+        self.__input_hotel_id = input(ask_target_hotel_id)  # 1.7
+        self.__hotel_data = Hotel.database_query_by_hotel_id(exec_=cursor, hotel_id=self.__input_hotel_id)  # 1.8
+
+        if self.__hotel_data:  # 1.9
+            ObjectEdit.build_menu_through_object_data(self)  # 2.0
+
+        if self.__number_attempts >= 3:  # 2.1
+            ObjectEdit.max_mistakes_reached(self)
+
+        if not self.__hotel_data:  # 2.2
+            ObjectEdit.throw_new_search_attempt(self)
 
     def build_menu_through_object_data(self):
         self.__number_attempts = 0
@@ -77,10 +146,34 @@ class ObjectEdit:
         # repetir esta função
         ObjectEdit.object_hotel_id_seek(self)
 
+    # PARTE 4
+    def object_attrib_choice(self):
+        ObjectEdit.display_object_data_menu(self)  # 2.3
+
+        self.__input_attrib_number = input(type_attrib_value)  # 2.4
+
+        if self.__input_attrib_number in ObjectEdit.allowed_attrib_values:  # 2.5
+            ObjectEdit.object_attrib_renewal(self)
+
+        elif self.__input_attrib_number in ObjectEdit.emergency_cancel:  #
+            ObjectEdit.algorithm_main_window(self)
+
+        else:  # 2.6
+            ObjectEdit.object_attrib_choice(self)
+
     def display_object_data_menu(self):
-        print(which_one)
+        code_block_init(ask_attrib_value, back_to_menu)
         for each_object_attrib in self.__hotel_data:
             print(str(each_object_attrib))
+
+    # PARTE 5
+    def object_attrib_renewal(self):
+
+        ObjectEdit.display_user_choice(self)  # 2.7
+
+        self.__input_new_attrib_value = input(new_attrib_value)  # 2.8
+
+        ObjectEdit.attrib_manager(self)  # 2.9
 
     def display_user_choice(self):
         print(attrib_chosen.format(ink(self.__hotel_data[int(self.__input_attrib_number) - 1])))
@@ -101,59 +194,8 @@ class ObjectEdit:
             else:
                 index += 1
 
-    # PARTE 2
-    def algorithm_main_window(self):
-        menu_creator(paint=True, move_to_right=False, right_px=0, menu_content=menu_edit_object)  # 1.2
-
-        self.__input_launch = input(operation)  # 1.3
-
-        if self.__input_launch == '0':  # 1.4
-            ObjectEdit.shut_it_down()
-
-        if self.__input_launch == '1':  # 1.5
-            ObjectEdit.object_hotel_id_seek(self)
-
-        else:  # 1.6
-            ObjectEdit.misleading_input(self)
-
-    # PARTE 3
-    def object_hotel_id_seek(self):
-
-        self.__input_hotel_id = input(hotel_id_name_to_edit)  # 1.7
-        self.__hotel_data = Hotel.database_query_by_hotel_id(exec_=cursor, hotel_id=self.__input_hotel_id)  # 1.8
-
-        if self.__hotel_data:  # 1.9
-            ObjectEdit.build_menu_through_object_data(self)  # 2.0
-
-        if self.__number_attempts >= 3:  # 2.1
-            ObjectEdit.max_mistakes_reached(self)
-
-        if not self.__hotel_data:  # 2.2
-            ObjectEdit.throw_new_search_attempt(self)
-
-    # PARTE 4
-    def object_attrib_choice(self):
-        ObjectEdit.display_object_data_menu(self)  # 2.3
-
-        self.__input_attrib_number = input(which_field)  # 2.4
-
-        if self.__input_attrib_number in ObjectEdit.allowed_attrib_values:  # 2.5
-            ObjectEdit.object_attrib_renewal(self)
-
-        else:  # 2.6
-            ObjectEdit.object_attrib_choice(self)
-
-    # PARTE 5
-    def object_attrib_renewal(self):
-
-        ObjectEdit.display_user_choice(self)  # 2.7
-
-        self.__input_new_attrib_value = input(new_value)  # 2.8
-
-        ObjectEdit.attrib_manager(self)  # 2.9
-
     def __init__(self):
-        self.__input_launch = None
+        self.__input_launcher = None
         self.__input_hotel_id = None
         self.__input_attrib_number = None
         self.__input_new_attrib_value = None

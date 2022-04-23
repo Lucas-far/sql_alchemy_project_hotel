@@ -2,7 +2,7 @@
 
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, Float, Integer, String
-from utils.functions import code_block_init
+from utils.functions import (code_block_init, ink)
 
 # Var para criação do banco, com chamada direta na classe abaixo, na função "database_init()"
 Base = declarative_base()
@@ -48,7 +48,7 @@ class Hotel(Base):
 
     @staticmethod
     def database_query(exec_):
-        available_data = "\n======= CONTEXTO: DADOS ATUAIS DO BANCO ======="
+        available_data = ink("\n======= CONTEXTO: DADOS ATUAIS DO BANCO =======")
         empty_database = 'Banco de dados encontra-se vazio.\n'
 
         hotels_database = Hotel.database_as_var(exec_)
@@ -142,9 +142,9 @@ class Hotel(Base):
 
     @staticmethod
     def to_update(exec_, hotel_id, _key, _value):
-        object_update = '\n======= ATUALIZAÇÃO DO OBJETO ======='
-        _before = '======= ANTES =======\n'
-        _after = '======= DEPOIS =======\n'
+        object_update = ink('\n======= ATUALIZAÇÃO DO OBJETO =======')
+        _before = ink('======= ANTES =======\n')
+        _after = ink('======= DEPOIS =======\n')
 
         target_object_then = Hotel.database_query_by_hotel_id(exec_=exec_, hotel_id=hotel_id)
         exec_.query(Hotel).filter(Hotel.hotel_id == hotel_id).update({_key: _value})
@@ -156,7 +156,7 @@ class Hotel(Base):
 
     @staticmethod
     def to_delete(exec_, hotel_id):
-        object_deleted = '\n======= OBJETO DELETADO ======='
+        object_deleted = ink('\n======= OBJETO DELETADO =======')
         object_to_be_deleted = Hotel.database_query_by_hotel_id(exec_=exec_, hotel_id=hotel_id)
         exec_.query(Hotel).filter(Hotel.hotel_id == hotel_id).delete()
         exec_.commit()
@@ -240,5 +240,4 @@ class Hotel(Base):
 
 
 if __name__ == '__main__':
-    # Funções dessa classe chamadas no pacote "menu"
     pass

@@ -7,7 +7,7 @@ from models.hotel import Hotel
 from utils.functions import (code_block_init, menu_creator)
 
 from utils.labels import (
-    menu_see_database, operation, closure, roll, error, warn
+    operation, closure, roll, error, warn
 )
 
 engine_test = Hotel.database_config(name='db.db')
@@ -25,6 +25,33 @@ class DatabaseQuery:
     1.4 - Mostrar erro, e instruir para as opções certas
     """
 
+    # TODO
+    menu = (
+        '\n========== VISUALIZAR DADOS DO BANCO ==========',
+        'Encerrar sessão   || aperte 0',
+        'Vizualizar banco  || aperte 1',
+        'Sair sem encerrar || aperte 2'
+    )
+
+    @staticmethod
+    def database_view():
+        menu_creator(paint=False, move_to_right=False, right_px=0, menu_content=DatabaseQuery.menu)  # 1.0
+        this_input = input(operation)  # 1.1
+
+        if this_input == '0':  # 1.2
+            DatabaseQuery.shut_it_down()
+
+        elif this_input == '1':  # 1.3
+            DatabaseQuery.show_database_content()
+
+        # TODO: Controlar o algoritmo principal (dar uma opção de retorno ao menu principal sem encerrar)
+        elif this_input == '2':
+            from menu.main_menu import manager_object
+            manager_object.database_full_management()
+
+        else:  # 1.4
+            DatabaseQuery.misleading_input()
+
     @staticmethod
     def shut_it_down():
         print(closure)
@@ -41,20 +68,6 @@ class DatabaseQuery:
         code_block_init(error, warn.format(0, 1))
         input(roll)
         DatabaseQuery.database_view()
-
-    @staticmethod
-    def database_view():
-        menu_creator(paint=True, move_to_right=False, right_px=0, menu_content=menu_see_database)  # 1.0
-        this_input = input(operation)  # 1.1
-
-        if this_input == '0':  # 1.2
-            DatabaseQuery.shut_it_down()
-
-        elif this_input == '1':  # 1.3
-            DatabaseQuery.show_database_content()
-
-        else:  # 1.4
-            DatabaseQuery.misleading_input()
 
 
 if __name__ == '__main__':
