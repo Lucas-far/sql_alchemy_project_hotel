@@ -118,18 +118,25 @@ class Hotel(Base):
         1.6 - Exibir o objeto adicionado
         1.7 - Caso contrário, avisar que o objeto já existe e não pode ser criado
         """
+
         # 1.0
         hotel_object_repeated = 'O nome de id de hotel "{}" já existe. Sua adição ao banco foi cancelada.'
         hotel_object_added = 'Hotel adicionado:\n{}'
 
-        yes = None  # 1.1
-        hotels_database = Hotel.database_as_var(exec_)  # 1.2
+        # 1.1
+        yes = None
 
-        for json in hotels_database:  # 1.3
+        # 1.2
+        hotels_database = Hotel.database_as_var(exec_)
+
+        # 1.3
+        for json in hotels_database:
             if json['hotel_id'] == hotel_object.hotel_id:
-                yes = True  # 1.4
+                # 1.4
+                yes = True
 
-        if not yes:  # 1.5
+        # 1.5
+        if not yes:
             exec_.add(hotel_object)
             exec_.commit()
 
@@ -137,7 +144,8 @@ class Hotel(Base):
             hotel_json = Hotel.database_query_by_hotel_id(exec_=exec_, hotel_id=hotel_object.hotel_id)
             print(hotel_object_added.format(hotel_json))
 
-        else:  # 1.7
+        # 1.7
+        else:
             print(hotel_object_repeated.format(hotel_object.hotel_id))
 
     @staticmethod

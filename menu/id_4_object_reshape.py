@@ -155,14 +155,16 @@ class ObjectEdit:
         if self.__input_attrib_number in ObjectEdit.allowed_attrib_values:  # 2.5
             ObjectEdit.object_attrib_renewal(self)
 
-        elif self.__input_attrib_number in ObjectEdit.emergency_cancel:  #
+        elif self.__input_attrib_number in ObjectEdit.emergency_cancel:
             ObjectEdit.algorithm_main_window(self)
 
         else:  # 2.6
             ObjectEdit.object_attrib_choice(self)
 
     def display_object_data_menu(self):
-        code_block_init(ask_attrib_value, back_to_menu)
+        instruction_about_numbers = '1. Id do hotel - 2. Nome do hotel - 3. Diária - 4. Estrelas - 5. Cidade'
+        brick = '=' * len(instruction_about_numbers)
+        code_block_init(ask_attrib_value, back_to_menu, instruction_about_numbers, brick)
         for each_object_attrib in self.__hotel_data:
             print(str(each_object_attrib))
 
